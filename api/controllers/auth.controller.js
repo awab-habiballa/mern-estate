@@ -1,10 +1,25 @@
 import User from "../models/user.model.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { validationResult } from "express-validator";
 import { errorHandler } from "../util/error.js";
 
 export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    const errorMessages = errors.array().map((error) => error.path);
+    const emailError = errorMessages.includes("email");
+    const passwordError = errorMessages.includes("password");
+
+    if (emailError && passwordError) {
+      return next(errorHandler(422, "Invalid Email and password!"));
+    } else if (emailError) {
+      return next(errorHandler(422, "Invalid Email!"));
+    } else if (passwordError) {
+      return next(errorHandler(422, "Invalid password!"));
+    }
+  }
   const uniqueUser = await User.findOne({ email });
   if (uniqueUser) {
     return next(errorHandler(401, "User is already Exist!"));
