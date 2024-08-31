@@ -11,10 +11,6 @@ router.post(
   ],
   signup
 );
-router.post(
-  "/signin",
-  [body("email").normalizeEmail(), body("password").trim()],
-  signin
-);
+router.post("/signin", body("email").normalizeEmail(), signin);
 
 export default router;
