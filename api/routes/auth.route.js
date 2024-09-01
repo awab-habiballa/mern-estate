@@ -1,6 +1,6 @@
 import express from "express";
 import { body } from "express-validator";
-import { signin, signup } from "../controllers/auth.controller.js";
+import { google, signin, signup } from "../controllers/auth.controller.js";
 const router = express.Router();
 
 router.post(
@@ -12,5 +12,6 @@ router.post(
   signup
 );
 router.post("/signin", body("email").normalizeEmail(), signin);
+router.post("/google", google);
 
 export default router;
