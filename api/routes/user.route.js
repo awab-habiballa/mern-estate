@@ -1,5 +1,9 @@
 import express from "express";
-import { test, updateUser } from "../controllers/user.controller.js";
+import {
+  deleteUser,
+  test,
+  updateUser,
+} from "../controllers/user.controller.js";
 import { verifyToken } from "../util/verifyUser.js";
 import { body } from "express-validator";
 
@@ -16,5 +20,7 @@ router.post(
   verifyToken,
   updateUser
 );
+
+router.delete("/delete/:id", verifyToken, deleteUser);
 
 export default router;
