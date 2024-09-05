@@ -15,7 +15,7 @@ router.post(
   [
     body("email").optional().isEmail().normalizeEmail(),
 
-    body("password").optional().isLength({ min: 6 }).isAlphanumeric().trim(),
+    body("password").optional().isLength({ min: 6 }).trim(),
   ],
   verifyToken,
   updateUser

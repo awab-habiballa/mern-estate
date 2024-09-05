@@ -11,6 +11,9 @@ import {
   deleteUserFailure,
   deleteUserStart,
   deleteUserSucess,
+  signOutUserFailure,
+  signOutUserStart,
+  signOutUserSucess,
   updateUserFailure,
   updateUserStart,
   updateUserSuccess,
@@ -82,7 +85,7 @@ export default function Profile() {
     }
   };
 
-  const handleDeleteUser = async (e) => {
+  const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
 
@@ -100,6 +103,21 @@ export default function Profile() {
       dispatch(deleteUserSucess(data));
     } catch (error) {
       dispatch(deleteUserFailure(error.message));
+    }
+  };
+
+  const handleSignOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("api/auth/signout");
+      const data = await res.json();
+      if (data.success === false) {
+        dispatch(signOutUserFailure(data.message));
+      }
+
+      dispatch(signOutUserSucess(data));
+    } catch (error) {
+      dispatch(signOutUserFailure(error.message));
     }
   };
   return (
@@ -169,7 +187,9 @@ export default function Profile() {
         >
           Delete account
         </span>
-        <span className="text-red-700 cursor-pointer ">Sign out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer ">
+          Sign out
+        </span>
       </div>
       {error && <p className="text-red-700 text-center mt-3">{error}</p>}
       {updateSuccess && (
