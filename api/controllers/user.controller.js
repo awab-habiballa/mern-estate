@@ -3,12 +3,6 @@ import User from "../models/user.model.js";
 import { errorHandler } from "../util/error.js";
 import { validationResult } from "express-validator";
 
-export const test = (req, res) => {
-  res.json({
-    message: "Hello Awab!!",
-  });
-};
-
 export const updateUser = async (req, res, next) => {
   if (req.user.id !== req.params.id)
     return next(errorHandler(401, "You can only update your account!"));

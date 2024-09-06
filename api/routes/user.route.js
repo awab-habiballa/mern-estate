@@ -1,15 +1,10 @@
 import express from "express";
-import {
-  deleteUser,
-  test,
-  updateUser,
-} from "../controllers/user.controller.js";
+import { deleteUser, updateUser } from "../controllers/user.controller.js";
 import { verifyToken } from "../util/verifyUser.js";
 import { body } from "express-validator";
 
 const router = express.Router();
 
-router.get("/test", test);
 router.post(
   "/update/:id",
   [

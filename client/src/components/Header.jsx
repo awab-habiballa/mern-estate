@@ -33,7 +33,7 @@ export default function Header() {
             </li>
           </Link>
 
-          <Link to="create-listing">
+          <Link to="/create-listing">
             {currentUser ? (
               <li className="text-slate-700 hover:underline">Create listing</li>
             ) : (
