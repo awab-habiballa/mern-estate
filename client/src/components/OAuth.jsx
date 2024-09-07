@@ -30,6 +30,7 @@ export default function OAuth() {
         return;
       }
       dispatch(signInSuccess(data));
+      console.log(data);
       navigate("/");
     } catch (error) {
       console.log("could not signin with Google", error);

@@ -6,7 +6,7 @@ export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
   return (
     <header className="bg-slate-200 shadow-md ">
-      <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
+      <div className="flex justify-between items-center max-w-8xl mx-auto p-3">
         <Link to="/">
           <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
             <span className="text-slate-500">Awab</span>
@@ -21,7 +21,7 @@ export default function Header() {
           />
           <FaSearch className="text-slate-600" />
         </form>
-        <ul className="flex gap-4">
+        <ul className="flex  items-center justify-between  gap-1 lg:gap-10 p-3">
           <Link to="/">
             <li className="hidden sm:inline text-slate-700 hover:underline">
               Home
