@@ -30,6 +30,9 @@ export default function Profile() {
   const [updateSuccess, setUpdateSuccess] = useState("");
   const [showListingsError, setShowListingsError] = useState(false);
   const [userListings, setUserListings] = useState([]);
+  const [deleteListingError, setDeleteListingError] = useState(false);
+  const [deleteListingLoading, setDeleteListingLoading] = useState(false);
+  console.log(userListings);
   const dispatch = useDispatch();
   console.log(userListings);
 
@@ -77,7 +80,7 @@ export default function Profile() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
+
       if (data.success === false) {
         dispatch(updateUserFailure(data.message));
         return;
@@ -140,6 +143,31 @@ export default function Profile() {
       setUserListings(data);
     } catch (error) {
       setShowListingsError(true);
+    }
+  };
+
+  const handelDeleteListing = async (listingId) => {
+    try {
+      setDeleteListingLoading(true);
+      setDeleteListingError(false);
+
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (data.success === false) {
+        setDeleteListingError("Failed to delete listing :)");
+        setDeleteListingLoading(false);
+        return;
+      }
+
+      setUserListings((prev) =>
+        prev.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      setDeleteListingError("Failed to delete listing :)");
     }
   };
   return (
@@ -225,6 +253,10 @@ export default function Profile() {
         {showListingsError ? "Error showing listings :)" : ""}
       </p>
 
+      {deleteListingError && (
+        <p className="text-red-700 text-center mt-3">{deleteListingError}</p>
+      )}
+
       {userListings &&
         userListings.length > 0 &&
         userListings.map((listing) => (
@@ -248,7 +280,13 @@ export default function Profile() {
             </Link>
 
             <div className=" flex  items-center gap-2">
-              <button className="text-red-700 uppercase">Delete</button>
+              <button
+                disabled={deleteListingLoading}
+                onClick={() => handelDeleteListing(listing._id)}
+                className="text-red-700 uppercase"
+              >
+                Delete
+              </button>
               <button className="text-green-700 uppercase">Edit</button>
             </div>
           </div>
