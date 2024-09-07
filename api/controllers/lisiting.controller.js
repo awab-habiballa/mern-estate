@@ -1,5 +1,4 @@
 import Listing from "../models/lisiting.model.js";
-import mongoose from "mongoose";
 
 import { errorHandler } from "../util/error.js";
 
@@ -31,7 +30,6 @@ export const deleteListing = async (req, res, next) => {
 
 export const updateListing = async (req, res, next) => {
   const userListing = await Listing.findById(req.params.id);
-  console.log(userListing);
 
   if (!userListing) return next(errorHandler(404, "Listing not found!"));
 
@@ -45,6 +43,18 @@ export const updateListing = async (req, res, next) => {
       { new: true }
     );
     res.status(200).json(updatedListing);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getListing = async (req, res, next) => {
+  try {
+    const userListing = await Listing.findById(req.params.id);
+
+    if (!userListing) return next(errorHandler(404, "Listing not found!"));
+
+    return res.status(200).json(userListing);
   } catch (error) {
     next(error);
   }
