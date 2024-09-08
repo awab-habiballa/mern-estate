@@ -3,6 +3,7 @@ import {
   deleteUser,
   getUserListing,
   updateUser,
+  getUser,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../util/verifyUser.js";
 import { body } from "express-validator";
@@ -22,5 +23,6 @@ router.post(
 
 router.delete("/delete/:id", verifyToken, deleteUser);
 router.get("/listings/:id", verifyToken, getUserListing);
+router.get("/:id", verifyToken,getUser)
 
 export default router;
