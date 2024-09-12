@@ -75,11 +75,15 @@ export const getListings = async (req, res, next) => {
     let furnished = req.query.furnished;
     if (furnished === undefined || furnished === "false") {
       furnished = { $in: [true, false] };
+    } else if (furnished === "true") {
+      furnished = true;
     }
 
     let parking = req.query.parking;
     if (parking === undefined || parking === "false") {
       parking = { $in: [true, false] };
+    } else if (parking === "true") {
+      parking = true;
     }
 
     let type = req.query.type;
