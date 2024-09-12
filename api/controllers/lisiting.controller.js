@@ -68,6 +68,8 @@ export const getListings = async (req, res, next) => {
     let offer = req.query.offer;
     if (offer === undefined || offer === "false") {
       offer = { $in: [false, true] };
+    } else if (offer === "true") {
+      offer = true;
     }
 
     let furnished = req.query.furnished;
@@ -90,6 +92,7 @@ export const getListings = async (req, res, next) => {
     const sort = req.query.sort || "createdAt";
     const order = req.query.order || "desc";
 
+    // Perform aggregate query to include discountPrice in sorting
     const listings = await Listing.aggregate([
       {
         $match: {
@@ -107,9 +110,9 @@ export const getListings = async (req, res, next) => {
         $addFields: {
           effectivePrice: {
             $cond: {
-              if: { $gt: ["$discountPrice", 0] }, // Use discountPrice if greater than 0
-              then: "$discountPrice", // Sort by discountPrice
-              else: "$regularPrice", // Otherwise, use regularPrice
+              if: { $gt: ["$discountPrice", 0] },
+              then: "$discountPrice",
+              else: "$regularPrice",
             },
           },
         },
@@ -117,7 +120,7 @@ export const getListings = async (req, res, next) => {
       {
         $sort: {
           [sort === "regularPrice" ? "effectivePrice" : sort]:
-            order === "asc" ? 1 : -1, // Sort by effectivePrice if sorting by price
+            order === "asc" ? 1 : -1,
         },
       },
     ])
