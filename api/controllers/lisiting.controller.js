@@ -88,22 +88,39 @@ export const getListings = async (req, res, next) => {
     const searchTerm = req.query.searchTerm || "";
 
     const sort = req.query.sort || "createdAt";
-
     const order = req.query.order || "desc";
 
-    const listings = await Listing.find({
-      $or: [
-        { name: { $regex: searchTerm, $options: "i" } },
-        { address: { $regex: searchTerm, $options: "i" } },
-      ],
-      offer,
-      furnished,
-      parking,
-      type,
-    })
-      .sort({
-        [sort]: order,
-      })
+    const listings = await Listing.aggregate([
+      {
+        $match: {
+          $or: [
+            { name: { $regex: searchTerm, $options: "i" } },
+            { address: { $regex: searchTerm, $options: "i" } },
+          ],
+          offer,
+          furnished,
+          parking,
+          type,
+        },
+      },
+      {
+        $addFields: {
+          effectivePrice: {
+            $cond: {
+              if: { $gt: ["$discountPrice", 0] }, // Use discountPrice if greater than 0
+              then: "$discountPrice", // Sort by discountPrice
+              else: "$regularPrice", // Otherwise, use regularPrice
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          [sort === "regularPrice" ? "effectivePrice" : sort]:
+            order === "asc" ? 1 : -1, // Sort by effectivePrice if sorting by price
+        },
+      },
+    ])
       .limit(limit)
       .skip(startIndex);
 
