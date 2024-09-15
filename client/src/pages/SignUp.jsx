@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import OAuth from "../components/OAuth";
+import OAuth from "../components/OAuth"; // Ensure the path is correct
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -44,49 +44,52 @@ export default function SignUp() {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign Up</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Username"
-          className="border p-3 rounded-lg"
-          id="username"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Email"
-          className="border p-3 rounded-lg"
-          id="email"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-3 rounded-lg"
-          id="password"
-          onChange={handleChange}
-          required
-        />
-
-        <button
-          disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          {loading ? "Loading..." : "Sign Up"}
-        </button>
-        <OAuth />
-      </form>
-      <div className="flex gap-2 mt-5">
-        <p>Have an account?</p>
-        <Link to="/sign-in">
-          <span className="text-blue-700"> Sign in</span>
-        </Link>
+    <div className="min-h-screen flex items-center justify-center bg-grayLight">
+      <div className="p-5 max-w-md w-full bg-white rounded-lg shadow-lg">
+        <h1 className="text-3xl text-center font-semibold my-7 text-brandBlue">
+          Sign Up
+        </h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Username"
+            className="border p-3 rounded-lg"
+            id="username"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Email"
+            className="border p-3 rounded-lg"
+            id="email"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="border p-3 rounded-lg"
+            id="password"
+            onChange={handleChange}
+            required
+          />
+          <button
+            disabled={loading}
+            className="bg-brandBlue text-white p-3 rounded-lg uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
+          >
+            {loading ? "Loading..." : "Sign Up"}
+          </button>
+          <OAuth /> {/* Ensure this component is placed correctly */}
+        </form>
+        <div className="flex gap-2 mt-5 justify-center">
+          <p>Have an account?</p>
+          <Link to="/sign-in">
+            <span className="text-blue-700"> Sign in</span>
+          </Link>
+        </div>
+        {error && <p className="text-red-500 mt-3 text-center">{error}</p>}
       </div>
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }

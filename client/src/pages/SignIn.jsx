@@ -6,7 +6,7 @@ import {
   signInFailure,
   signInSuccess,
 } from "../redux/user/userSlice";
-import OAuth from "../components/OAuth";
+import OAuth from "../components/OAuth"; // Ensure the path is correct
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -47,41 +47,44 @@ export default function SignIn() {
   };
 
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Email"
-          className="border p-3 rounded-lg"
-          id="email"
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="border p-3 rounded-lg"
-          id="password"
-          onChange={handleChange}
-          required
-        />
-
-        <button
-          disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          {loading ? "Loading..." : "Sign In"}
-        </button>
-        <OAuth />
-      </form>
-      <div className="flex gap-2 mt-5">
-        <p>Dont have an account?</p>
-        <Link to="/sign-up">
-          <span className="text-blue-700"> Sign up</span>
-        </Link>
+    <div className="min-h-screen flex items-center justify-center bg-grayLight">
+      <div className="p-5 max-w-md w-full bg-white rounded-lg shadow-lg mt-10 mb-10">
+        <h1 className="text-3xl text-center font-semibold my-5 text-brandBlue">
+          Sign In
+        </h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            type="text"
+            placeholder="Email"
+            className="border p-3 rounded-lg"
+            id="email"
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            className="border p-3 rounded-lg"
+            id="password"
+            onChange={handleChange}
+            required
+          />
+          <button
+            disabled={loading}
+            className="bg-brandBlue text-white p-3 rounded-lg uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
+          >
+            {loading ? "Loading..." : "Sign In"}
+          </button>
+          <OAuth /> {/* Ensure this component is placed correctly */}
+        </form>
+        <div className="flex gap-2 mt-5 justify-center">
+          <p>Don't have an account?</p>
+          <Link to="/sign-up">
+            <span className="text-blue-700"> Sign up</span>
+          </Link>
+        </div>
+        {error && <p className="text-red-500 mt-3 text-center">{error}</p>}
       </div>
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }

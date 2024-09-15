@@ -96,7 +96,6 @@ export const getListings = async (req, res, next) => {
     const sort = req.query.sort || "createdAt";
     const order = req.query.order || "desc";
 
-    // Perform aggregate query to include discountPrice in sorting
     const listings = await Listing.aggregate([
       {
         $match: {
@@ -127,9 +126,13 @@ export const getListings = async (req, res, next) => {
             order === "asc" ? 1 : -1,
         },
       },
-    ])
-      .limit(limit)
-      .skip(startIndex);
+      {
+        $skip: startIndex,
+      },
+      {
+        $limit: limit,
+      },
+    ]);
 
     return res.status(200).json(listings);
   } catch (error) {

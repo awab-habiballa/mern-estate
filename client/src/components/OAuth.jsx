@@ -3,9 +3,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { app } from "../firebase";
 import { signInFailure, signInSuccess } from "../redux/user/userSlice";
+import { FaGoogle } from "react-icons/fa";
+
 export default function OAuth() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleGoogleClick = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -30,19 +33,20 @@ export default function OAuth() {
         return;
       }
       dispatch(signInSuccess(data));
-      console.log(data);
       navigate("/");
     } catch (error) {
-      console.log("could not signin with Google", error);
+      console.log("Could not sign in with Google", error);
     }
   };
+
   return (
     <button
       onClick={handleGoogleClick}
       type="button"
-      className="bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95"
+      className="flex items-center justify-center gap-2 w-full bg-gray-200 text-gray-700 p-3 rounded-lg shadow-md hover:bg-gray-300 transition duration-300"
     >
-      Continue with google
+      <FaGoogle className="text-lg" />
+      Continue with Google
     </button>
   );
 }

@@ -19,6 +19,8 @@ import {
   updateUserStart,
   updateUserSuccess,
 } from "../redux/user/userSlice";
+import { FaTrashAlt, FaSignOutAlt, FaListUl } from "react-icons/fa";
+import Footer from "../components/Footer";
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -32,15 +34,14 @@ export default function Profile() {
   const [userListings, setUserListings] = useState([]);
   const [deleteListingError, setDeleteListingError] = useState(false);
   const [deleteListingLoading, setDeleteListingLoading] = useState(false);
-  console.log(userListings);
   const dispatch = useDispatch();
-  console.log(userListings);
 
   useEffect(() => {
     if (file) {
       handleFileUpload(file);
     }
   }, [file]);
+
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
@@ -63,10 +64,12 @@ export default function Profile() {
       }
     );
   };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
     setUpdateSuccess("");
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -170,129 +173,146 @@ export default function Profile() {
       setDeleteListingError("Failed to delete listing :)");
     }
   };
+
   return (
-    <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7"> Profile</h1>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          onChange={(e) => setFile(e.target.files[0])}
-          hidden
-          type="file"
-          ref={fileRef}
-          accept="image/*"
-        />
-        <img
-          onClick={() => fileRef.current.click()}
-          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
-          src={formData.avatar || currentUser.avatar}
-          alt="profile"
-        />
-        <p className="text-sm self-center">
-          {fileUploadError ? (
-            <span className="text-red-700">
-              Error Image Upload (image must be less than 2 mb)
-            </span>
-          ) : filePerc > 0 && filePerc < 100 ? (
-            <span className="text-slate-700">{`uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
-            <span className="text-green-700">Image Successfully uploaded!</span>
-          ) : (
-            ""
-          )}
-        </p>
-        <input
-          className="border p-3 rounded-lg"
-          type="text"
-          placeholder="username"
-          defaultValue={currentUser.username}
-          id="username"
-          onChange={handleChange}
-        />
-        <input
-          className="border p-3 rounded-lg"
-          type="email"
-          placeholder="email"
-          defaultValue={currentUser.email}
-          id="email"
-          onChange={handleChange}
-        />
-        <input
-          className="border p-3 rounded-lg"
-          type="password"
-          placeholder="password"
-          id="password"
-          onChange={handleChange}
-        />
-        <button
-          disabled={loading}
-          className="bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80"
-        >
-          {loading ? "Loading" : "update"}
-        </button>
-      </form>
-      <div className="flex justify-between mt-5">
-        <span
-          onClick={handleDeleteUser}
-          className="text-red-700 cursor-pointer "
-        >
-          Delete account
-        </span>
-        <span onClick={handleSignOut} className="text-red-700 cursor-pointer ">
-          Sign out
-        </span>
-      </div>
-      {error && <p className="text-red-700 text-center mt-3">{error}</p>}
-      {updateSuccess && (
-        <p className="text-green-700 text-center mt-3">{updateSuccess}</p>
-      )}
-
-      <button onClick={handleShowListings} className="text-green-700 w-full">
-        Show my listings
-      </button>
-      <p className="text-red-700 mt-5">
-        {showListingsError ? "Error showing listings :)" : ""}
-      </p>
-
-      {deleteListingError && (
-        <p className="text-red-700 text-center mt-3">{deleteListingError}</p>
-      )}
-
-      {userListings &&
-        userListings.length > 0 &&
-        userListings.map((listing) => (
-          <div
-            key={listing._id}
-            className=" border-t-4 rounded-lg p-3 flex justify-between items-center gap-4"
+    <div className="bg-grayLight min-h-screen">
+      <main className="p-5 max-w-xl mx-auto bg-white rounded-lg shadow-lg mt-10 mb-20">
+        <h1 className="text-3xl font-semibold text-center my-7 text-brandBlue">
+          Profile
+        </h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <input
+            onChange={(e) => setFile(e.target.files[0])}
+            hidden
+            type="file"
+            ref={fileRef}
+            accept="image/*"
+          />
+          <img
+            onClick={() => fileRef.current.click()}
+            className="rounded-full h-28 w-28 object-cover cursor-pointer self-center mt-2 shadow-lg"
+            src={formData.avatar || currentUser.avatar}
+            alt="profile"
+          />
+          <p className="text-sm self-center">
+            {fileUploadError ? (
+              <span className="text-red-700">
+                Error Image Upload (image must be less than 2 mb)
+              </span>
+            ) : filePerc > 0 && filePerc < 100 ? (
+              <span className="text-slate-700">{`uploading ${filePerc}%`}</span>
+            ) : filePerc === 100 ? (
+              <span className="text-green-700">
+                Image Successfully uploaded!
+              </span>
+            ) : (
+              ""
+            )}
+          </p>
+          <input
+            className="border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+            type="text"
+            placeholder="username"
+            defaultValue={currentUser.username}
+            id="username"
+            onChange={handleChange}
+          />
+          <input
+            className="border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+            type="email"
+            placeholder="email"
+            defaultValue={currentUser.email}
+            id="email"
+            onChange={handleChange}
+          />
+          <input
+            className="border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+            type="password"
+            placeholder="Password"
+            id="password"
+            onChange={handleChange}
+          />
+          <button
+            disabled={loading}
+            className="bg-brandBlue text-white rounded-lg p-3 uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
           >
-            <Link to={`/listing/${listing._id}`}>
-              <img
-                className="h-40 w-40 object-contain"
-                src={listing.imageUrls[0]}
-                alt="listing cover"
-              />
-            </Link>
+            {loading ? "Loading" : "Update"}
+          </button>
+        </form>
+        <div className="flex justify-between mt-5">
+          <button
+            onClick={handleDeleteUser}
+            className="flex items-center gap-2 text-red-600 cursor-pointer hover:text-red-700 transition duration-300"
+          >
+            <FaTrashAlt />
+            Delete Account
+          </button>
+          <button
+            onClick={handleSignOut}
+            className="flex items-center gap-2 text-red-600 cursor-pointer hover:text-red-700 transition duration-300"
+          >
+            <FaSignOutAlt />
+            Sign Out
+          </button>
+        </div>
+        {error && <p className="text-red-700 text-center mt-3">{error}</p>}
+        {updateSuccess && (
+          <p className="text-green-700 text-center mt-3">{updateSuccess}</p>
+        )}
 
-            <Link
-              className="flex-1 text-slate-700 font-semibold  hover:underline truncate"
-              to={`/listing/${listing._id}`}
+        <button
+          onClick={handleShowListings}
+          className="flex items-center justify-center gap-2 text-green-700 w-full mt-5 hover:underline transition duration-300"
+        >
+          <FaListUl />
+          Show My Listings
+        </button>
+        <p className="text-red-700 mt-5">
+          {showListingsError ? "Error showing listings :)" : ""}
+        </p>
+
+        {deleteListingError && (
+          <p className="text-red-700 text-center mt-3">{deleteListingError}</p>
+        )}
+
+        {userListings &&
+          userListings.length > 0 &&
+          userListings.map((listing) => (
+            <div
+              key={listing._id}
+              className="border-t-4 rounded-lg p-3 flex justify-between items-center gap-4 mt-5"
             >
-              <p>{listing.name}</p>
-            </Link>
-
-            <div className=" flex  items-center gap-2">
-              <button
-                disabled={deleteListingLoading}
-                onClick={() => handelDeleteListing(listing._id)}
-                className="text-red-700 uppercase"
-              >
-                Delete
-              </button>
-              <Link to={`/update-listing/${listing._id}`}>
-                <button className="text-green-700 uppercase">Edit</button>
+              <Link to={`/listing/${listing._id}`}>
+                <img
+                  className="h-40 w-40 object-contain"
+                  src={listing.imageUrls[0]}
+                  alt="listing cover"
+                />
               </Link>
+
+              <Link
+                className="flex-1 text-slate-700 font-semibold hover:underline truncate"
+                to={`/listing/${listing._id}`}
+              >
+                <p>{listing.name}</p>
+              </Link>
+
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={deleteListingLoading}
+                  onClick={() => handelDeleteListing(listing._id)}
+                  className="text-red-700 uppercase"
+                >
+                  Delete
+                </button>
+                <Link to={`/update-listing/${listing._id}`}>
+                  <button className="text-green-700 uppercase">Edit</button>
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+      </main>
+      <Footer />
     </div>
   );
 }

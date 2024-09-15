@@ -5,16 +5,16 @@ import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import { useSelector } from "react-redux";
 import "swiper/css/bundle";
-import Contact from "../components/Contact";
-
+import Footer from "../components/Footer";
 import {
   FaBath,
   FaBed,
   FaChair,
-  FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaParking,
-  FaShare,
+  FaPhone,
+  FaWhatsapp,
+  FaShareAlt,
 } from "react-icons/fa";
 
 export default function Listing() {
@@ -23,7 +23,6 @@ export default function Listing() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [contact, setContact] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
 
   const params = useParams();
@@ -49,105 +48,115 @@ export default function Listing() {
     };
     fetchListing();
   }, [params.listingId]);
-  console.log(loading);
 
   return (
-    <main>
+    <main className="bg-grayLight min-h-screen p-4">
       {loading && <p className="text-center my-7 text-2xl">Loading...</p>}
       {error && (
         <p className="text-center my-7 text-2xl">Something went wrong!</p>
       )}
       {listing && !loading && !error && (
-        <div>
-          <Swiper navigation>
-            {listing.imageUrls.map((url) => (
-              <SwiperSlide key={url}>
-                <img
-                  src={url}
-                  alt="listing image"
-                  className="w-full h-[550px] object-contain mt-2"
-                />
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          <div className="fixed top-[13%] right-[3%] z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer">
-            <FaShare
-              className="text-slate-500"
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                setCopied(true);
-                setTimeout(() => {
-                  setCopied(false);
-                }, 2000);
-              }}
-            />
+        <div className="max-w-5xl mx-auto mb-20">
+          {/* Image Slider */}
+          <div className="relative overflow-hidden shadow-lg rounded-t-lg">
+            {" "}
+            {/* Added rounded-t-lg for top rounded corners */}
+            <Swiper navigation>
+              {listing.imageUrls.map((url) => (
+                <SwiperSlide key={url}>
+                  <img
+                    src={url}
+                    alt="listing image"
+                    className="w-full h-[550px] object-cover"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            {/* Share Icon */}
+            <div className="absolute top-4 right-4 z-10 border rounded-full w-12 h-12 flex justify-center items-center bg-white cursor-pointer shadow-lg hover:opacity-90 transition">
+              <FaShareAlt
+                className="text-brandBlue"
+                onClick={() => {
+                  navigator.clipboard.writeText(window.location.href);
+                  setCopied(true);
+                  setTimeout(() => {
+                    setCopied(false);
+                  }, 2000);
+                }}
+              />
+            </div>
+            {copied && (
+              <p className="fixed top-16 right-8 z-10 rounded-md bg-white p-2 shadow-md">
+                Link copied!
+              </p>
+            )}
           </div>
-          {copied && (
-            <p className="fixed top-[23%] right-[5%] z-10 rounded-md bg-slate-100 p-2">
-              Link copied!
-            </p>
-          )}
-          <div className="flex flex-col max-w-4xl mx-auto p-3 my-7 gap-4">
-            <p className="text-2xl font-semibold">
-              {listing.name} - ${" "}
+
+          {/* Listing Details */}
+          <div className="bg-white shadow-lg p-8 rounded-b-lg">
+            {" "}
+            <p className="text-3xl font-semibold mb-4 text-grayDark">
+              {listing.name} - $
               {listing.offer
                 ? listing.discountPrice.toLocaleString("en-US")
                 : listing.regularPrice.toLocaleString("en-US")}
               {listing.type === "rent" && " / month"}
             </p>
-            <p className="flex items-center mt-6 gap-2 text-slate-600  text-sm">
-              <FaMapMarkerAlt className="text-green-700" />
+            <p className="flex items-center gap-2 text-brandBlue mb-4">
+              <FaMapMarkerAlt />
               {listing.address}
             </p>
-            <div className="flex gap-4">
-              <p className="bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
+            <div className="flex gap-4 mb-4">
+              <span className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-4 py-1 rounded-full text-sm shadow">
                 {listing.type === "rent" ? "For Rent" : "For Sale"}
-              </p>
+              </span>
               {listing.offer && (
-                <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                  ${+listing.regularPrice - +listing.discountPrice}
-                </p>
+                <span className="bg-gradient-to-r from-green-400 to-green-600 text-white px-4 py-1 rounded-full text-sm shadow">
+                  ${+listing.regularPrice - +listing.discountPrice} Discount
+                </span>
               )}
             </div>
-            <p className="text-slate-800">
+            <p className="text-gray-700 mb-4">
               <span className="font-semibold text-black">Description - </span>
               {listing.description}
             </p>
-            <ul className="text-green-900 font-semibold text-sm flex flex-wrap items-center gap-4 sm:gap-6">
-              <li className="flex items-center gap-1 whitespace-nowrap ">
+            <ul className="text-brandBlue font-semibold text-sm flex flex-wrap items-center gap-6 mb-6">
+              <li className="flex items-center gap-1 whitespace-nowrap">
                 <FaBed className="text-lg" />
                 {listing.bedrooms > 1
                   ? `${listing.bedrooms} beds `
                   : `${listing.bedrooms} bed `}
               </li>
-              <li className="flex items-center gap-1 whitespace-nowrap ">
+              <li className="flex items-center gap-1 whitespace-nowrap">
                 <FaBath className="text-lg" />
                 {listing.bathrooms > 1
                   ? `${listing.bathrooms} baths `
                   : `${listing.bathrooms} bath `}
               </li>
-              <li className="flex items-center gap-1 whitespace-nowrap ">
+              <li className="flex items-center gap-1 whitespace-nowrap">
                 <FaParking className="text-lg" />
                 {listing.parking ? "Parking spot" : "No Parking"}
               </li>
-              <li className="flex items-center gap-1 whitespace-nowrap ">
+              <li className="flex items-center gap-1 whitespace-nowrap">
                 <FaChair className="text-lg" />
                 {listing.furnished ? "Furnished" : "Unfurnished"}
               </li>
             </ul>
-            {currentUser && listing.userRef !== currentUser._id && !contact && (
-              <button
-                onClick={() => setContact(true)}
-                className="bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 p-3"
-              >
-                Contact landlord
+            {/* Contact Buttons */}
+            <div className="flex gap-4 mt-6">
+              <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full shadow hover:bg-gray-300 transition">
+                <FaPhone /> Call
               </button>
-            )}
-            {contact && <Contact listing={listing} />}
+              <button className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-full shadow hover:bg-gray-300 transition">
+                <FaWhatsapp /> WhatsApp
+              </button>
+            </div>
           </div>
         </div>
       )}
+
+      {/* Footer should be outside the listing container */}
+      <Footer className="w-full mt-20" />
     </main>
   );
 }
