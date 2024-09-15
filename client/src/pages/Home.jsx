@@ -48,7 +48,6 @@ export default function Home() {
     <div className="font-sans">
       {/* Hero Section */}
       <div className="relative h-[60vh] overflow-hidden">
-        {" "}
         {/* Adjusted height */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
@@ -60,7 +59,7 @@ export default function Home() {
         ></video>
         <div className="absolute inset-0 bg-gradient-to-r from-gray-800 via-transparent to-gray-800 opacity-60"></div>
         <div className="relative z-10 p-6 lg:p-20 flex flex-col gap-6 max-w-6xl mx-auto text-center lg:text-left">
-          <h1 className="text-white font-poppins font-bold text-3xl lg:text-5xl tracking-tight">
+          <h1 className="text-white font-poppins font-bold text-2xl sm:text-3xl lg:text-5xl tracking-tight">
             Discover Your <span className="text-brandBlue">Perfect</span> <br />
             Home with Confidence
           </h1>
@@ -74,7 +73,7 @@ export default function Home() {
             to="/search"
             className="mt-4 h-12 w-48 flex items-center justify-center bg-brandBlue text-white font-bold rounded-full hover:bg-hoverBlue transition duration-300 text-md inline-block shadow-md space-x-2"
           >
-            <span className="text-white">Start Your Search</span>
+            <span className="text-white">Find Your Property</span>
             <FaArrowRight className="text-white text-lg" />
           </Link>
         </div>
@@ -88,7 +87,7 @@ export default function Home() {
           {offerListings && offerListings.length > 0 && (
             <div>
               <div className="my-4 flex justify-between items-center">
-                <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-grayDark">
+                <h2 className="text-xl sm:text-3xl font-poppins font-bold text-grayDark">
                   Exclusive Offers
                 </h2>
                 <Link
@@ -108,7 +107,7 @@ export default function Home() {
           {rentListings && rentListings.length > 0 && (
             <div>
               <div className="my-4 flex justify-between items-center">
-                <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-grayDark">
+                <h2 className="text-xl sm:text-3xl font-poppins font-bold text-grayDark">
                   Recent Places for Rent
                 </h2>
                 <Link
@@ -128,7 +127,7 @@ export default function Home() {
           {saleListings && saleListings.length > 0 && (
             <div>
               <div className="my-4 flex justify-between items-center">
-                <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-grayDark">
+                <h2 className="text-xl sm:text-3xl font-poppins font-bold text-grayDark">
                   Recent Places for Sale
                 </h2>
                 <Link

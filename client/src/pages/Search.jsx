@@ -181,7 +181,7 @@ export default function Search() {
                       onChange={handleChnage}
                       checked={sidebarData.type === "all"}
                     />
-                    <span>Rent & Sell</span>
+                    <span>All</span>
                   </div>
                   {/* Other checkboxes... */}
                   <div className="flex items-center gap-2">
@@ -202,7 +202,7 @@ export default function Search() {
                       onChange={handleChnage}
                       checked={sidebarData.type === "sell"}
                     />
-                    <span>Sell</span>
+                    <span>buy</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <input
