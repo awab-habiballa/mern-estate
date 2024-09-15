@@ -56,6 +56,7 @@ export default function Home() {
           autoPlay
           loop
           muted
+          playsInline
         ></video>
         <div className="absolute inset-0 bg-gradient-to-r from-gray-800 via-transparent to-gray-800 opacity-60"></div>
         <div className="relative z-10 p-6 lg:p-20 flex flex-col gap-6 max-w-6xl mx-auto text-center lg:text-left">
