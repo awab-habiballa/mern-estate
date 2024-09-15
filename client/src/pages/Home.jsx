@@ -52,7 +52,7 @@ export default function Home() {
         {/* Adjusted height */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
-          src="/videos/uae-real-estate.mov"
+          src="/videos/Uae-Real-Estate.mp4"
           autoPlay
           loop
           muted
