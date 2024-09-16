@@ -6,27 +6,27 @@ export default function ListingItem({ listing }) {
   const handleWhatsAppClick = (e) => {
     e.stopPropagation();
     if (listing.contactNumber) {
-      // Construct the custom message
+      const listingUrl = `https://yourwebsite.com/listing/${listing._id}`; // Replace with your actual website URL
+
       const message = `Hello, I'm interested in your listing:
-- *${listing.name}*
-- 📍 ${listing.address}
-- 💰 ${
-        listing.offer
-          ? `$${listing.discountPrice.toLocaleString("en-US")}`
-          : `$${listing.regularPrice.toLocaleString("en-US")}`
-      } ${listing.type === "rent" ? "/ month" : ""}
-- 🛏️ ${listing.bedrooms} ${listing.bedrooms > 1 ? "beds" : "bed"}
-- 🛁 ${listing.bathrooms} ${listing.bathrooms > 1 ? "baths" : "bath"}
+  - *${listing.name}*
+  - 📍 ${listing.address}
+  - 💰 ${
+    listing.offer
+      ? `$${listing.discountPrice.toLocaleString("en-US")}`
+      : `$${listing.regularPrice.toLocaleString("en-US")}`
+  } ${listing.type === "rent" ? "/ month" : ""}
+  - 🛏️ ${listing.bedrooms} ${listing.bedrooms > 1 ? "beds" : "bed"}
+  - 🛁 ${listing.bathrooms} ${listing.bathrooms > 1 ? "baths" : "bath"}
+  
+  Please let me know if it's still available.
+  
+  Check the listing here: ${listingUrl}`;
 
-Please let me know if it's still available.`;
-
-      // Encode the message to be used in a URL
       const whatsappUrl = `https://api.whatsapp.com/send?phone=${encodeURIComponent(
         listing.contactNumber
       )}&text=${encodeURIComponent(message)}`;
       window.open(whatsappUrl, "_blank");
-    } else {
-      alert("Contact number not available.");
     }
   };
 

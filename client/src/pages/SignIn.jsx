@@ -6,7 +6,7 @@ import {
   signInFailure,
   signInSuccess,
 } from "../redux/user/userSlice";
-import OAuth from "../components/OAuth"; // Ensure the path is correct
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});
@@ -16,6 +16,10 @@ export default function SignIn() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+
+    if (error) {
+      dispatch(signInFailure(null));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -48,7 +52,7 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-grayLight">
-      <div className="p-5 max-w-md w-full bg-white rounded-lg shadow-lg mt-10 mb-10">
+      <div className="p-5 max-w-md w-full bg-white rounded-lg shadow-lg py-6 mt-5 lg:-mt-20">
         <h1 className="text-3xl text-center font-semibold my-5 text-brandBlue">
           Sign In
         </h1>
@@ -69,13 +73,15 @@ export default function SignIn() {
             onChange={handleChange}
             required
           />
+          {/* Error message */}
+          {error && <p className="text-red text-center">{error}</p>}
           <button
             disabled={loading}
             className="bg-brandBlue text-white p-3 rounded-lg uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
           >
             {loading ? "Loading..." : "Sign In"}
           </button>
-          <OAuth /> {/* Ensure this component is placed correctly */}
+          <OAuth />
         </form>
         <div className="flex gap-2 mt-5 justify-center">
           <p>Don't have an account?</p>
@@ -83,7 +89,6 @@ export default function SignIn() {
             <span className="text-blue-700"> Sign up</span>
           </Link>
         </div>
-        {error && <p className="text-red-500 mt-3 text-center">{error}</p>}
       </div>
     </div>
   );

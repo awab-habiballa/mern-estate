@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import OAuth from "../components/OAuth"; // Ensure the path is correct
+import OAuth from "../components/OAuth";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
@@ -10,6 +10,10 @@ export default function SignUp() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
+
+    if (error) {
+      setError(null);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -45,8 +49,8 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-grayLight">
-      <div className="p-5 max-w-md w-full bg-white rounded-lg shadow-lg">
-        <h1 className="text-3xl text-center font-semibold my-7 text-brandBlue">
+      <div className="p-5 max-w-md w-full bg-white rounded-lg shadow-lg py-6 mt-5 lg:-mt-20">
+        <h1 className="text-3xl text-center font-semibold my-5 text-brandBlue">
           Sign Up
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -74,13 +78,15 @@ export default function SignUp() {
             onChange={handleChange}
             required
           />
+          {/* Error message */}
+          {error && <p className="text-red text-center">{error}</p>}
           <button
             disabled={loading}
             className="bg-brandBlue text-white p-3 rounded-lg uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
           >
             {loading ? "Loading..." : "Sign Up"}
           </button>
-          <OAuth /> {/* Ensure this component is placed correctly */}
+          <OAuth />
         </form>
         <div className="flex gap-2 mt-5 justify-center">
           <p>Have an account?</p>
@@ -88,7 +94,6 @@ export default function SignUp() {
             <span className="text-blue-700"> Sign in</span>
           </Link>
         </div>
-        {error && <p className="text-red-500 mt-3 text-center">{error}</p>}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 import { app } from "../firebase";
-import { FaUpload, FaBed, FaBath } from "react-icons/fa"; // Removed FaParking
+import { FaUpload, FaBed, FaBath } from "react-icons/fa";
 import Footer from "../components/Footer";
 
 export default function CreateListing() {
@@ -18,7 +18,7 @@ export default function CreateListing() {
     name: "",
     description: "",
     address: "",
-    contactNumber: "+971", // Default country code for UAE
+    contactNumber: "+971",
     type: "rent",
     bedrooms: 1,
     bathrooms: 1,
@@ -114,7 +114,6 @@ export default function CreateListing() {
   };
 
   const validateContactNumber = (number) => {
-    // Regex pattern for validating UAE phone numbers starting with +971 and exactly 9 digits
     const regex = /^\+971\d{9}$/;
     return regex.test(number);
   };
@@ -122,7 +121,6 @@ export default function CreateListing() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate contact number
     if (!validateContactNumber(formData.contactNumber)) {
       return setError(
         "Please enter a valid UAE contact number starting with +971 followed by 9 digits"
@@ -173,9 +171,10 @@ export default function CreateListing() {
         </h1>
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col md:flex-row gap-8"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
         >
-          <div className="flex flex-col gap-6 flex-1">
+          {/* Left Column */}
+          <div className="flex flex-col gap-6">
             <h2 className="text-lg font-semibold text-brandBlue">
               Property Details
             </h2>
@@ -191,9 +190,8 @@ export default function CreateListing() {
               value={formData.name}
             />
             <textarea
-              type="text"
               placeholder="Description"
-              className="border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+              className="border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue h-32"
               id="description"
               required
               onChange={handleChange}
@@ -208,7 +206,7 @@ export default function CreateListing() {
               onChange={handleChange}
               value={formData.address}
             />
-            <div className="flex gap-4">
+            <div className="flex flex-wrap gap-2">
               <input
                 type="text"
                 placeholder="+971"
@@ -268,10 +266,62 @@ export default function CreateListing() {
                 <span>Furnished</span>
               </div>
             </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="flex flex-col gap-6">
+            <h2 className="text-lg font-semibold text-brandBlue">
+              Upload Images
+            </h2>
+            <p className="text-sm text-gray-600">
+              The first image will be the cover (max 6).
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <input
+                onChange={(e) => setFiles(e.target.files)}
+                className="p-3 border border-gray-300 rounded-lg shadow-sm"
+                type="file"
+                id="images"
+                accept="image/*"
+                multiple
+              />
+              <button
+                type="button"
+                disabled={uploading}
+                onClick={handleImageSubmit}
+                className="p-2 md:p-3 text-white bg-green-500 rounded-lg uppercase hover:bg-green-600 transition duration-300"
+              >
+                <FaUpload className="inline-block mr-2" />
+                {uploading ? "Uploading..." : "Upload"}
+              </button>
+            </div>
+            <p className="text-red-700 text-sm">
+              {imageUploadError && imageUploadError}
+            </p>
+            {formData.imageUrls.length > 0 &&
+              formData.imageUrls.map((url, index) => (
+                <div
+                  key={url}
+                  className="flex justify-between p-2 border items-center rounded-lg"
+                >
+                  <img
+                    src={url}
+                    alt="listing image"
+                    className="w-20 h-20 object-cover rounded-md"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveImage(index)}
+                    className="p-2 text-red-700 border border-red-700 rounded-lg uppercase hover:bg-red-100 transition duration-300"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
             <h2 className="text-lg font-semibold text-brandBlue">
               Price and Rooms
             </h2>
-            <div className="flex flex-wrap gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="flex items-center gap-2">
                 <input
                   type="number"
@@ -316,7 +366,6 @@ export default function CreateListing() {
                   <span className="text-xs">($ / month)</span>
                 </div>
               </div>
-
               {formData.offer && (
                 <div className="flex items-center gap-2">
                   <input
@@ -337,58 +386,12 @@ export default function CreateListing() {
               )}
             </div>
           </div>
-          <div className="flex flex-col flex-1 gap-4">
-            <h2 className="text-lg font-semibold text-brandBlue">
-              Upload Images
-            </h2>
-            <p className="text-sm text-gray-600">
-              The first image will be the cover (max 6).
-            </p>
-            <div className="flex gap-4">
-              <input
-                onChange={(e) => setFiles(e.target.files)}
-                className="p-3 border border-gray-300 rounded-lg shadow-sm"
-                type="file"
-                id="images"
-                accept="image/*"
-                multiple
-              />
-              <button
-                type="button"
-                disabled={uploading}
-                onClick={handleImageSubmit}
-                className="p-3 text-white bg-green-500 rounded-lg uppercase hover:bg-green-600 transition duration-300"
-              >
-                <FaUpload className="inline-block mr-2" />
-                {uploading ? "Uploading..." : "Upload"}
-              </button>
-            </div>
-            <p className="text-red-700 text-sm">
-              {imageUploadError && imageUploadError}
-            </p>
-            {formData.imageUrls.length > 0 &&
-              formData.imageUrls.map((url, index) => (
-                <div
-                  key={url}
-                  className="flex justify-between p-3 border items-center rounded-lg"
-                >
-                  <img
-                    src={url}
-                    alt="listing image"
-                    className="w-20 h-20 object-cover rounded-md"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => handleRemoveImage(index)}
-                    className="p-2 text-red-700 border border-red-700 rounded-lg uppercase hover:bg-red-100 transition duration-300"
-                  >
-                    Delete
-                  </button>
-                </div>
-              ))}
+
+          {/* Full-width section for buttons and errors */}
+          <div className="col-span-1 md:col-span-2 flex flex-col gap-4 mt-6">
             <button
               disabled={uploading || loading}
-              className="p-3 bg-brandBlue text-white rounded-lg uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
+              className="p-2 md:p-3 bg-brandBlue text-white rounded-lg uppercase hover:bg-hoverBlue transition duration-300 disabled:opacity-80"
             >
               {loading ? "Creating..." : "Create Listing"}
             </button>

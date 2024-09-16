@@ -86,8 +86,7 @@ export default function Search() {
     ) {
       setSidebarData({
         ...sidebarData,
-        [e.target.id]:
-          e.target.checked || e.target.checked === "true " ? true : false,
+        [e.target.id]: e.target.checked,
       });
     }
 
@@ -134,11 +133,9 @@ export default function Search() {
     const startIndex = numberOfListings;
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("startIndex", startIndex);
-    console.log(startIndex);
     const searchQuery = urlParams.toString();
     const res = await fetch(`api/listing/get?${searchQuery}`);
     const data = await res.json();
-    console.log(data);
 
     if (data.length < 9) {
       setShowMore(false);
@@ -151,28 +148,32 @@ export default function Search() {
       <div className="max-w-7xl mb-20 mx-auto py-10 px-6 flex flex-col md:flex-row gap-8">
         {/* Sidebar (Search Form) */}
         <div className="md:w-1/3">
-          <div className="bg-white shadow-md rounded-lg p-7">
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-              <div className="relative">
+          <div className="bg-white shadow-md rounded-lg p-5">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+              {/* Search Input Field */}
+              <div className="bg-white flex items-center rounded-full border border-gray-300 px-4 py-2">
                 <input
                   type="text"
                   id="searchTerm"
-                  placeholder="Location, Building, ..."
-                  className="w-full p-3 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brandBlue"
+                  placeholder="City , Building , Location ..."
+                  className="bg-transparent focus:outline-none w-full text-sm sm:text-md text-grayDark px-2"
                   value={sidebarData.searchTerm}
                   onChange={handleChnage}
                 />
                 <button
                   type="submit"
-                  className="absolute right-3 top-2/4 transform -translate-y-2/4 bg-brandBlue p-2 rounded-full hover:bg-hoverBlue transition duration-300"
+                  className="p-2 bg-brandBlue hover:bg-hoverBlue rounded-full transition duration-300"
                 >
                   <FaSearch className="text-white" />
                 </button>
               </div>
 
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-4 flex-wrap">
-                  {/* Segmented Control for Type */}
+              {/* Property Type Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  Property Type
+                </h3>
+                <div className="flex flex-wrap gap-2 md:flex-col">
                   <div className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -183,7 +184,6 @@ export default function Search() {
                     />
                     <span>All</span>
                   </div>
-                  {/* Other checkboxes... */}
                   <div className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -202,7 +202,7 @@ export default function Search() {
                       onChange={handleChnage}
                       checked={sidebarData.type === "sell"}
                     />
-                    <span>buy</span>
+                    <span>Buy</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <input
@@ -217,9 +217,12 @@ export default function Search() {
                 </div>
               </div>
 
-              {/* Amenities */}
-              <div className="flex flex-col gap-4">
-                <div className="flex gap-4 flex-wrap">
+              {/* Amenities Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-gray-700 mb-2">
+                  Amenities
+                </h3>
+                <div className="flex flex-wrap gap-2 md:flex-col">
                   <div className="flex items-center gap-2">
                     <input
                       type="checkbox"
@@ -243,13 +246,19 @@ export default function Search() {
                 </div>
               </div>
 
-              {/* Sort */}
-              <div className="flex flex-col gap-2">
+              {/* Sort By */}
+              <div className="flex items-center gap-2">
+                <label
+                  htmlFor="sort_order"
+                  className="text-lg font-semibold text-gray-700"
+                >
+                  Sort By
+                </label>
                 <select
                   onChange={handleChnage}
                   defaultValue={"created_at_desc"}
                   id="sort_order"
-                  className="border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-brandBlue"
+                  className="w-1/2 border border-gray-300 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-brandBlue"
                 >
                   <option value="createdAt_desc">Latest</option>
                   <option value="regularPrice_desc">Price high to low</option>
@@ -259,19 +268,19 @@ export default function Search() {
               </div>
 
               {/* Buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-2">
                 <button
                   type="submit"
-                  className="bg-brandBlue text-white p-3 rounded-full hover:bg-hoverBlue transition duration-300 uppercase font-bold flex-1"
+                  className="bg-brandBlue text-white py-2 px-4 rounded-full hover:bg-hoverBlue transition duration-300 uppercase font-bold text-xs sm:text-sm flex-1"
                 >
                   Search
                 </button>
                 <button
                   type="button"
                   onClick={handleResetFilters}
-                  className="bg-gray-200 text-gray-700 p-3 rounded-full hover:bg-gray-300 transition duration-300 uppercase font-bold flex-1"
+                  className="bg-gray-200 text-gray-700 py-2 px-4 rounded-full hover:bg-gray-300 transition duration-300 uppercase font-bold text-xs sm:text-sm flex-1"
                 >
-                  Remove Filters
+                  Reset Filters
                 </button>
               </div>
             </form>
