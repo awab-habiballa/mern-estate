@@ -217,6 +217,33 @@ export default function CreateListing() {
               value={formData.address}
             />
 
+            {/* Contact Number Input */}
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="+971"
+                className="w-24 border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+                id="contactNumberCode"
+                readOnly
+              />
+              <input
+                type="text"
+                placeholder="Contact Number (9 digits)"
+                className="flex-1 border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+                id="contactNumber"
+                maxLength="9"
+                minLength="9"
+                required
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    contactNumber: "+971" + e.target.value,
+                  })
+                }
+                value={formData.contactNumber.slice(4)}
+              />
+            </div>
+
             {/* Rent or Sell Checkboxes */}
             <div className="flex gap-6 flex-wrap">
               <div className="flex items-center gap-2">

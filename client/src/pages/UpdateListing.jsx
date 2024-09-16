@@ -19,7 +19,7 @@ export default function UpdateListing() {
     name: "",
     description: "",
     address: "",
-    contactNumber: "+971",
+    contactNumber: "+971", // Default to UAE country code
     type: "rent", // Default to 'rent'
     bedrooms: 1,
     bathrooms: 1,
@@ -245,6 +245,19 @@ export default function UpdateListing() {
               value={formData.address}
             />
 
+            {/* Contact Number */}
+            <input
+              type="text"
+              placeholder="Contact Number (e.g. +971123456789)"
+              className="border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
+              id="contactNumber"
+              maxLength="13"
+              minLength="10"
+              required
+              onChange={handleChange}
+              value={formData.contactNumber}
+            />
+
             {/* Rent or Sell Checkboxes */}
             <div className="flex gap-6 flex-wrap">
               <div className="flex items-center gap-2">
@@ -425,6 +438,7 @@ export default function UpdateListing() {
             </div>
           </div>
 
+          {/* Full-width section for buttons and errors */}
           <div className="col-span-1 md:col-span-2 flex flex-col gap-4 mt-6">
             <button
               disabled={uploading || loading}
