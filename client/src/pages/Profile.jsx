@@ -21,6 +21,7 @@ import {
 } from "../redux/user/userSlice";
 import { FaTrashAlt, FaSignOutAlt, FaListUl } from "react-icons/fa";
 import Footer from "../components/Footer";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function Profile() {
   const fileRef = useRef(null);
@@ -35,6 +36,7 @@ export default function Profile() {
   const [deleteListingError, setDeleteListingError] = useState(false);
   const [deleteListingLoading, setDeleteListingLoading] = useState(false);
   const dispatch = useDispatch();
+  useScrollToTop();
 
   useEffect(() => {
     if (file) {

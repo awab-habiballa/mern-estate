@@ -1,7 +1,9 @@
 import { FaHandsHelping, FaBullseye, FaUsers } from "react-icons/fa";
-import Footer from "../components/Footer"; // Adjust the import path based on your project structure
+import Footer from "../components/Footer";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function About() {
+  useScrollToTop();
   return (
     <div className="bg-grayLight min-h-screen flex flex-col justify-between">
       <div className="py-20 px-4 max-w-6xl mx-auto">
@@ -61,7 +63,7 @@ export default function About() {
           </p>
         </div>
       </div>
-      <Footer /> {/* Adding the footer component here */}
+      <Footer />
     </div>
   );
 }

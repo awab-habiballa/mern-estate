@@ -3,6 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 import Footer from "../components/Footer";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function Search() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState([]);
   const [showMore, setShowMore] = useState(false);
+  useScrollToTop();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);

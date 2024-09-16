@@ -16,6 +16,7 @@ import {
   FaWhatsapp,
   FaShareAlt,
 } from "react-icons/fa";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function Listing() {
   SwiperCore.use([Navigation]);
@@ -26,6 +27,7 @@ export default function Listing() {
   const { currentUser } = useSelector((state) => state.user);
 
   const params = useParams();
+  useScrollToTop();
 
   useEffect(() => {
     const fetchListing = async () => {
@@ -51,7 +53,7 @@ export default function Listing() {
 
   const handleWhatsAppClick = () => {
     if (listing && listing.contactNumber) {
-      const listingUrl = `https://yourwebsite.com/listing/${listing._id}`;
+      const listingUrl = `https://mern-estate-g43r.onrender.com/listing/${listing._id}`;
 
       const message = `Hello, I'm interested in your listing:
 - *${listing.name}*

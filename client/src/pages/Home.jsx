@@ -4,11 +4,13 @@ import { Link } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 import Footer from "../components/Footer";
 import EmiratesSelector from "../components/EmiratesSelector";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function Home() {
   const [offerListings, setOfferListings] = useState([]);
   const [saleListings, setSaleListings] = useState([]);
   const [rentListings, setRentListings] = useState([]);
+  useScrollToTop();
 
   useEffect(() => {
     const fetchOfferListings = async () => {
@@ -46,9 +48,7 @@ export default function Home() {
 
   return (
     <div className="font-sans">
-      {/* Hero Section */}
       <div className="relative h-[60vh] overflow-hidden">
-        {/* Adjusted height */}
         <video
           className="absolute inset-0 w-full h-full object-cover"
           src="/videos/Uae-Real-Estate.mp4"
@@ -81,7 +81,6 @@ export default function Home() {
 
       <EmiratesSelector />
 
-      {/* Main Content Section with Light Grey Background */}
       <div className="bg-grayLight py-10">
         <div className="max-w-6xl mx-auto px-6 py-10 flex flex-col gap-16">
           {offerListings && offerListings.length > 0 && (

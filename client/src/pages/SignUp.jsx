@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import OAuth from "../components/OAuth";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  useScrollToTop();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -78,7 +80,7 @@ export default function SignUp() {
             onChange={handleChange}
             required
           />
-          {/* Error message */}
+
           {error && <p className="text-red text-center">{error}</p>}
           <button
             disabled={loading}

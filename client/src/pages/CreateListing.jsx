@@ -10,6 +10,7 @@ import {
 import { app } from "../firebase";
 import { FaUpload, FaBed, FaBath } from "react-icons/fa";
 import Footer from "../components/Footer";
+import useScrollToTop from "../hooks/useScrollToTop";
 
 export default function CreateListing() {
   const [files, setFiles] = useState([]);
@@ -34,6 +35,7 @@ export default function CreateListing() {
   const [loading, setLoading] = useState(false);
   const { currentUser } = useSelector((state) => state.user);
   const navigate = useNavigate();
+  useScrollToTop();
 
   const handleImageSubmit = () => {
     if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
@@ -98,18 +100,26 @@ export default function CreateListing() {
   };
 
   const handleChange = (e) => {
-    const { id, value, type } = e.target;
-
-    if (id === "sell" || id === "rent") {
-      setFormData({ ...formData, type: id });
+    if (e.target.id === "sell") {
+      setFormData({ ...formData, type: "sell" });
+    } else if (e.target.id === "rent") {
+      setFormData({ ...formData, type: "rent" });
     }
 
-    if (id === "parking" || id === "furnished" || id === "offer") {
-      setFormData({ ...formData, [id]: e.target.checked });
+    if (
+      e.target.id === "parking" ||
+      e.target.id === "furnished" ||
+      e.target.id === "offer"
+    ) {
+      setFormData({ ...formData, [e.target.id]: e.target.checked });
     }
 
-    if (type === "number" || type === "text" || type === "textarea") {
-      setFormData({ ...formData, [id]: value });
+    if (
+      e.target.type === "number" ||
+      e.target.type === "text" ||
+      e.target.type === "textarea"
+    ) {
+      setFormData({ ...formData, [e.target.id]: e.target.value });
     }
   };
 
@@ -206,31 +216,31 @@ export default function CreateListing() {
               onChange={handleChange}
               value={formData.address}
             />
-            <div className="flex flex-wrap gap-2">
-              <input
-                type="text"
-                placeholder="+971"
-                className="w-24 border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
-                id="contactNumberCode"
-                readOnly
-              />
-              <input
-                type="text"
-                placeholder="Contact Number (9 digits)"
-                className="flex-1 border p-3 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-brandBlue"
-                id="contactNumber"
-                maxLength="9"
-                minLength="9"
-                required
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    contactNumber: "+971" + e.target.value,
-                  })
-                }
-                value={formData.contactNumber.slice(4)}
-              />
+
+            {/* Rent or Sell Checkboxes */}
+            <div className="flex gap-6 flex-wrap">
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="rent"
+                  className="w-5 accent-brandBlue"
+                  onChange={handleChange}
+                  checked={formData.type === "rent"}
+                />
+                <span>Rent</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  id="sell"
+                  className="w-5 accent-brandBlue"
+                  onChange={handleChange}
+                  checked={formData.type === "sell"}
+                />
+                <span>Sell</span>
+              </div>
             </div>
+
             <h2 className="text-lg font-semibold text-brandBlue">
               Additional Information
             </h2>
@@ -387,7 +397,6 @@ export default function CreateListing() {
             </div>
           </div>
 
-          {/* Full-width section for buttons and errors */}
           <div className="col-span-1 md:col-span-2 flex flex-col gap-4 mt-6">
             <button
               disabled={uploading || loading}
